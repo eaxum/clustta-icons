@@ -1,0 +1,14 @@
+node_modules/
+dist/
+*.tgz
+.DS_Store
+Thumbs.db
+*.log
+.env
+.env.*
+packages/clustta-icons/dist/
+packages/clustta-icons/src/icons/
+packages/clustta-icons/src/index.generated.ts
+packages/clustta-icons-vue/dist/
+packages/clustta-icons-vue/src/icons/
+packages/clustta-icons-vue/src/index.generated.ts

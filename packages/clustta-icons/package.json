@@ -1,0 +1,37 @@
+{
+  "name": "@clustta/icons",
+  "version": "0.1.0",
+  "description": "Clustta Icons — Framework-agnostic icon data and utilities",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.mjs",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./icons/*": {
+      "import": "./dist/esm/icons/*.mjs",
+      "require": "./dist/cjs/icons/*.js",
+      "types": "./dist/types/icons/*.d.ts"
+    }
+  },
+  "sideEffects": false,
+  "files": ["dist", "LICENSE"],
+  "scripts": {
+    "build": "node build.mjs",
+    "clean": "rimraf dist"
+  },
+  "keywords": ["icons", "svg", "clustta", "icon-library"],
+  "author": "Clustta <hello@clustta.com>",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eaxum/clustta-icons",
+    "directory": "packages/clustta-icons"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  }
+}

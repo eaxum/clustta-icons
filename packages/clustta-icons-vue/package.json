@@ -1,0 +1,44 @@
+{
+  "name": "@clustta/icons-vue",
+  "version": "0.1.0",
+  "description": "Clustta Icons — Vue 3 icon components",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.mjs",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./icons/*": {
+      "import": "./dist/esm/icons/*.mjs",
+      "require": "./dist/cjs/icons/*.js",
+      "types": "./dist/types/icons/*.d.ts"
+    }
+  },
+  "sideEffects": false,
+  "files": ["dist", "LICENSE"],
+  "scripts": {
+    "build": "node build.mjs",
+    "clean": "rimraf dist"
+  },
+  "keywords": ["icons", "svg", "vue", "vue3", "clustta", "icon-components"],
+  "author": "Clustta <hello@clustta.com>",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eaxum/clustta-icons",
+    "directory": "packages/clustta-icons-vue"
+  },
+  "peerDependencies": {
+    "vue": ">=3.4.0"
+  },
+  "dependencies": {
+    "@clustta/icons": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "vue": "^3.5.0"
+  }
+}
