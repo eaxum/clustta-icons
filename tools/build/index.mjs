@@ -96,9 +96,9 @@ async function build() {
 async function generateCoreIndex(icons) {
   const lines = [
     '// Auto-generated — do not edit manually',
-    "export { defaultAttributes } from '../types.js';",
-    "export type { IconData, IconNode, IconNodeChild, CreateIconOptions } from '../types.js';",
-    "export { toSvg, createElement } from '../create-icon.js';",
+    "export { defaultAttributes } from './types.js';",
+    "export type { IconData, IconNode, IconNodeChild, CreateIconOptions } from './types.js';",
+    "export { toSvg, createElement } from './create-icon.js';",
     '',
     '// Icon data exports',
     ...icons.map(({ name, componentName }) =>
@@ -114,8 +114,8 @@ async function generateCoreIndex(icons) {
 async function generateVueIndex(icons) {
   const lines = [
     '// Auto-generated — do not edit manually',
-    "export { createCiIcon } from '../create-ci-icon.js';",
-    "export type { CiIconProps } from '../create-ci-icon.js';",
+    "export { createCiIcon } from './create-ci-icon.js';",
+    "export type { CiIconProps } from './create-ci-icon.js';",
     '',
     '// Icon component exports',
     ...icons.map(({ componentName }) =>

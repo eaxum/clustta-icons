@@ -7,23 +7,33 @@
   "types": "./dist/types/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/types/index.d.ts",
       "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js",
-      "types": "./dist/types/index.d.ts"
+      "require": "./dist/cjs/index.js"
     },
     "./icons/*": {
+      "types": "./dist/types/icons/*.d.ts",
       "import": "./dist/esm/icons/*.mjs",
-      "require": "./dist/cjs/icons/*.js",
-      "types": "./dist/types/icons/*.d.ts"
+      "require": "./dist/cjs/icons/*.js"
     }
   },
   "sideEffects": false,
-  "files": ["dist", "LICENSE"],
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "node build.mjs",
     "clean": "rimraf dist"
   },
-  "keywords": ["icons", "svg", "vue", "vue3", "clustta", "icon-components"],
+  "keywords": [
+    "icons",
+    "svg",
+    "vue",
+    "vue3",
+    "clustta",
+    "icon-components"
+  ],
   "author": "Clustta <hello@clustta.com>",
   "license": "ISC",
   "repository": {
@@ -39,6 +49,6 @@
   },
   "devDependencies": {
     "typescript": "^5.6.0",
-    "vue": "^3.5.0"
+    "vue": "^3.5.33"
   }
 }

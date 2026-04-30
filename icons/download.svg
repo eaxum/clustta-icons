@@ -1,5 +1,1 @@
-<svg viewBox="0 0 24 24">
-  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-  <polyline points="7 10 12 15 17 10"/>
-  <line x1="12" y1="15" x2="12" y2="3"/>
-</svg>
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24"><path d="M16.449 4.198a8.982 8.982 0 1 1-8.9 0"/><path d="M15.377 11.345 12 14.725l-3.38-3.38M12 2.816v11.908"/></svg>

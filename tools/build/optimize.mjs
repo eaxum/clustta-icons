@@ -26,11 +26,20 @@ async function run() {
   console.log(`Optimizing ${files.length} SVGs${DRY_RUN ? ' (dry run)' : ''}...\n`);
 
   let totalSaved = 0;
+  let errors = [];
 
   for (const file of files) {
     const filePath = join(ICONS_DIR, file);
     const raw = await readFile(filePath, 'utf-8');
-    const result = optimize(raw, { ...svgoConfig, path: filePath });
+
+    let result;
+    try {
+      result = optimize(raw, { ...svgoConfig, path: filePath });
+    } catch (err) {
+      errors.push({ file, error: err.message });
+      console.log(`  ⚠️  ${file}: SKIPPED (${err.message.slice(0, 60)})`);
+      continue;
+    }
 
     const saved = raw.length - result.data.length;
     totalSaved += saved;
@@ -45,6 +54,10 @@ async function run() {
   }
 
   console.log(`\nTotal saved: ${totalSaved}B across ${files.length} files`);
+  if (errors.length > 0) {
+    console.log(`\n⚠️  ${errors.length} file(s) had errors:`);
+    errors.forEach(({ file, error }) => console.log(`  - ${file}: ${error.slice(0, 80)}`));
+  }
 }
 
 run().catch(console.error);

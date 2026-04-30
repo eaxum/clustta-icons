@@ -1,4 +1,4 @@
-import { h, defineComponent, type PropType, type SVGAttributes } from 'vue';
+import { h, defineComponent, type PropType, type SVGAttributes, type VNode } from 'vue';
 import { defaultAttributes, type IconNode } from '@clustta/icons';
 
 export interface CiIconProps extends /* @vue-ignore */ SVGAttributes {
@@ -72,7 +72,7 @@ function renderNode(
   tag: string,
   attrs: Record<string, string>,
   children?: IconNode
-) {
+): VNode {
   if (children && children.length > 0) {
     return h(
       tag,

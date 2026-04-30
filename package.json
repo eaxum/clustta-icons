@@ -4,19 +4,26 @@
   "version": "0.0.0",
   "description": "Clustta Icons — Open-source icon toolkit for creative workflows",
   "scripts": {
-    "build": "node tools/build/index.mjs",
+    "generate": "node tools/build/index.mjs",
     "build:core": "pnpm --filter @clustta/icons build",
     "build:vue": "pnpm --filter @clustta/icons-vue build",
-    "build:all": "pnpm build && pnpm build:core && pnpm build:vue",
+    "build": "pnpm generate && pnpm build:core && pnpm build:vue",
     "optimize": "node tools/build/optimize.mjs",
     "lint": "eslint .",
-    "clean": "rimraf packages/clustta-icons/dist packages/clustta-icons-vue/dist"
+    "clean": "rimraf packages/clustta-icons/dist packages/clustta-icons-vue/dist packages/clustta-icons/src/icons packages/clustta-icons-vue/src/icons packages/clustta-icons/src/index.generated.ts packages/clustta-icons-vue/src/index.generated.ts"
   },
-  "keywords": ["icons", "svg", "vue", "icon-library", "clustta"],
+  "keywords": [
+    "icons",
+    "svg",
+    "vue",
+    "icon-library",
+    "clustta"
+  ],
   "author": "Clustta <hello@clustta.com>",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^22.0.0",
+    "esbuild": "^0.28.0",
     "eslint": "^9.0.0",
     "rimraf": "^6.0.0",
     "svgo": "^3.3.0",

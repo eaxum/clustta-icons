@@ -5,7 +5,13 @@
     "rootDir": "./src",
     "declaration": true,
     "emitDeclarationOnly": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "skipLibCheck": true,
+    "paths": {
+      "@clustta/icons": ["../clustta-icons/src/index.ts"]
+    },
+    "baseUrl": "."
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
