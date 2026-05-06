@@ -7,6 +7,7 @@ export interface CiIconProps extends /* @vue-ignore */ SVGAttributes {
 }
 
 export const CI_ICON_VARIANT_KEY = 'ci-icon-variant';
+export const CI_ICON_SIZE_KEY = 'ci-icon-size';
 
 /**
  * Creates a Vue component from raw SVG inner HTML per variant.
@@ -26,7 +27,7 @@ export function createCiIcon(
     props: {
       size: {
         type: [Number, String] as PropType<number | string>,
-        default: 24,
+        default: undefined,
       },
       color: {
         type: String,
@@ -40,6 +41,7 @@ export function createCiIcon(
     setup(props, { attrs }) {
       return () => {
         const globalVariant = inject<{ value: string } | string>(CI_ICON_VARIANT_KEY, 'outline-1.5');
+        const globalSize = inject<{ value: number | string } | number | string>(CI_ICON_SIZE_KEY, 20);
         const activeVariant = props.variant
           || (typeof globalVariant === 'object' && 'value' in globalVariant ? globalVariant.value : globalVariant)
           || 'outline-1.5';
@@ -48,7 +50,10 @@ export function createCiIcon(
         const resolvedVariant = variants[activeVariant] ? activeVariant : Object.keys(variants)[0];
         const innerHTML = variants[resolvedVariant];
         const baseAttrs = svgAttrs[resolvedVariant] || {};
-        const size = Number(props.size);
+        const resolvedSize = props.size !== undefined
+          ? Number(props.size)
+          : Number(typeof globalSize === 'object' && 'value' in globalSize ? globalSize.value : globalSize);
+        const size = resolvedSize || 20;
 
         return h('svg', {
           ...baseAttrs,
