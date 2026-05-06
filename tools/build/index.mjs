@@ -17,7 +17,6 @@
 import { readdir, readFile, writeFile, mkdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { join, basename, resolve } from 'node:path';
-import { optimize } from 'svgo';
 import { generateCoreIcon } from './generate-core.mjs';
 import { generateVueIcon } from './generate-vue.mjs';
 import { toPascalCase } from './utils.mjs';
@@ -34,21 +33,30 @@ const VARIANT_DIRS = {
   'icons-twotone': 'twotone',
 };
 
-async function loadSvgoConfig() {
-  const configPath = join(ROOT, 'svgo.config.mjs');
-  const config = await import(`file://${configPath}`);
-  return config.default;
-}
-
 /**
- * Extracts SVG root attributes and inner content from an optimized SVG string.
+ * Extracts SVG root attributes and inner content from a raw SVG string.
  */
 function extractSvgParts(svgString) {
   const attrMatch = svgString.match(/<svg([^>]*)>([\s\S]*)<\/svg>/);
   if (!attrMatch) return null;
 
   const attrsString = attrMatch[1];
-  const innerHTML = attrMatch[2].trim();
+  let innerHTML = attrMatch[2].trim();
+
+  // Remove Serif/Affinity Designer bounding-box rects (artboard markers)
+  // These are rects whose only visual purpose is a container boundary:
+  // - rects with fill:none in style (with any other non-stroke rules)
+  // - rects with no style/fill/stroke attributes at all (inherit nothing useful)
+  innerHTML = innerHTML.replace(/<rect[^>]*\/?>\s*/g, (match) => {
+    // Keep rects that have a meaningful fill or stroke (actual visual elements)
+    const hasFillColor = /fill="(?!none)[^"]+"|style="[^"]*fill:(?!none)[^;"]*/.test(match);
+    const hasStroke = /stroke="[^"]+"|style="[^"]*stroke:[^;"]*/.test(match);
+    if (hasFillColor || hasStroke) return match;
+    return '';
+  });
+
+  // Replace hardcoded colors with currentColor (stroke/fill in inline styles and attributes)
+  innerHTML = normalizeColors(innerHTML);
 
   // Parse attributes
   const attrs = {};
@@ -62,6 +70,26 @@ function extractSvgParts(svgString) {
   }
 
   return { innerHTML, attrs };
+}
+
+/**
+ * Replaces hardcoded stroke/fill colors with currentColor.
+ * Preserves 'none' and already-currentColor values.
+ * Handles both attributes (stroke="white") and inline styles (stroke:white).
+ */
+function normalizeColors(svg) {
+  // Replace stroke/fill attributes with hardcoded colors
+  svg = svg.replace(/(stroke|fill)="(?!none|currentColor)([^"]*)"/g, '$1="currentColor"');
+
+  // Replace stroke/fill in inline style attributes
+  svg = svg.replace(/style="([^"]*)"/g, (match, styleContent) => {
+    const normalized = styleContent
+      .replace(/(stroke)\s*:\s*(?!none|currentColor)[^;"]*/g, '$1:currentColor')
+      .replace(/(fill)\s*:\s*(?!none|currentColor)[^;"]*/g, '$1:currentColor');
+    return `style="${normalized}"`;
+  });
+
+  return svg;
 }
 
 async function build() {
@@ -86,8 +114,6 @@ async function build() {
   // Ensure output directories
   await mkdir(CORE_DIST, { recursive: true });
   await mkdir(VUE_DIST, { recursive: true });
-
-  const svgoConfig = await loadSvgoConfig();
 
   // Collect all icon names from the default variant first
   const defaultDir = availableVariants['outline-1.5'];
@@ -119,13 +145,7 @@ async function build() {
 
       const raw = await readFile(filePath, 'utf-8');
 
-      // Optimize with SVGO
-      const result = optimize(raw, {
-        ...svgoConfig,
-        path: filePath,
-      });
-
-      const parts = extractSvgParts(result.data);
+      const parts = extractSvgParts(raw);
       if (!parts) {
         console.warn(`  ⚠️  Could not parse ${file} (${variantKey})`);
         continue;
