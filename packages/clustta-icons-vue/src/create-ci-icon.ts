@@ -1,20 +1,25 @@
-import { h, defineComponent, type PropType, type SVGAttributes, type VNode } from 'vue';
-import { defaultAttributes, type IconNode } from '@clustta/icons';
+import { h, defineComponent, inject, type PropType, type SVGAttributes } from 'vue';
 
 export interface CiIconProps extends /* @vue-ignore */ SVGAttributes {
   size?: number | string;
-  strokeWidth?: number | string;
   color?: string;
-  absoluteStrokeWidth?: boolean;
+  variant?: string;
 }
 
+export const CI_ICON_VARIANT_KEY = 'ci-icon-variant';
+
 /**
- * Creates a Vue component from icon node data.
+ * Creates a Vue component from raw SVG inner HTML per variant.
  * Each icon module calls this to produce its named export.
+ *
+ * @param name - Component name (e.g. 'CiArchive')
+ * @param variants - Object mapping variant keys to raw SVG innerHTML
+ * @param svgAttrs - Base SVG attributes (viewBox, fill, stroke, etc.) per variant
  */
 export function createCiIcon(
   name: string,
-  iconNodes: IconNode
+  variants: Record<string, string>,
+  svgAttrs: Record<string, Record<string, string>>
 ) {
   const component = defineComponent({
     name,
@@ -23,66 +28,43 @@ export function createCiIcon(
         type: [Number, String] as PropType<number | string>,
         default: 24,
       },
-      strokeWidth: {
-        type: [Number, String] as PropType<number | string>,
-        default: 2,
-      },
       color: {
         type: String,
-        default: 'currentColor',
+        default: undefined,
       },
-      absoluteStrokeWidth: {
-        type: Boolean,
-        default: false,
+      variant: {
+        type: String,
+        default: undefined,
       },
     },
-    setup(props, { attrs, slots }) {
+    setup(props, { attrs }) {
       return () => {
-        const size = Number(props.size);
-        const computedStrokeWidth = props.absoluteStrokeWidth
-          ? (Number(props.strokeWidth) * 24) / size
-          : Number(props.strokeWidth);
+        const globalVariant = inject<{ value: string } | string>(CI_ICON_VARIANT_KEY, 'outline-1.5');
+        const activeVariant = props.variant
+          || (typeof globalVariant === 'object' && 'value' in globalVariant ? globalVariant.value : globalVariant)
+          || 'outline-1.5';
 
-        return h(
-          'svg',
-          {
-            ...defaultAttributes,
-            width: size,
-            height: size,
-            stroke: props.color,
-            'stroke-width': computedStrokeWidth,
-            class: ['ci-icon', `ci-${toKebab(name)}`],
-            ...attrs,
-          },
-          [
-            ...iconNodes.map(([tag, nodeAttrs, children]) =>
-              renderNode(tag, nodeAttrs, children)
-            ),
-            ...(slots.default ? [slots.default()] : []),
-          ]
-        );
+        // Fallback to first available variant if requested isn't available
+        const resolvedVariant = variants[activeVariant] ? activeVariant : Object.keys(variants)[0];
+        const innerHTML = variants[resolvedVariant];
+        const baseAttrs = svgAttrs[resolvedVariant] || {};
+        const size = Number(props.size);
+
+        return h('svg', {
+          ...baseAttrs,
+          xmlns: 'http://www.w3.org/2000/svg',
+          width: size,
+          height: size,
+          ...(props.color ? { stroke: props.color } : {}),
+          class: ['ci-icon', `ci-${toKebab(name)}`],
+          ...attrs,
+          innerHTML,
+        });
       };
     },
   });
 
   return component;
-}
-
-function renderNode(
-  tag: string,
-  attrs: Record<string, string>,
-  children?: IconNode
-): VNode {
-  if (children && children.length > 0) {
-    return h(
-      tag,
-      attrs,
-      children.map(([childTag, childAttrs, childChildren]) =>
-        renderNode(childTag, childAttrs, childChildren)
-      )
-    );
-  }
-  return h(tag, attrs);
 }
 
 function toKebab(str: string): string {
@@ -91,3 +73,4 @@ function toKebab(str: string): string {
     .replace(/^Ci/, '')
     .toLowerCase();
 }
+

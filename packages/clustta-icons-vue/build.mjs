@@ -30,7 +30,7 @@ await build({
   sourcemap: true,
   minify: false,
   treeShaking: true,
-  external: ['vue', '@clustta/icons'],
+  external: ['vue'],
 });
 
 // CJS build
@@ -43,7 +43,7 @@ await build({
   target: 'es2022',
   sourcemap: true,
   minify: false,
-  external: ['vue', '@clustta/icons'],
+  external: ['vue'],
 });
 
 // Generate type declarations manually (avoids rootDir issues with tsc)

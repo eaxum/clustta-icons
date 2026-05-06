@@ -1,1 +1,13 @@
-<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24"><path d="M0 0h24v24H0z"/><path d="M18.61 9.351a3.37 3.37 0 0 0-2.485-1.101h-1.5A1.13 1.13 0 0 1 13.5 7.125v-1.5a3.39 3.39 0 0 0-3.375-3.375H8.25m10.36 7.101c.219.22.68-.049.602-.35-1.01-3.864-4.55-6.751-8.712-6.751H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h4.834"/><path d="M17.003 15.23v3.64m1.82-1.82h-3.64m7.279 0c0 2.994-2.465 5.459-5.459 5.459s-5.459-2.465-5.459-5.459 2.465-5.459 5.459-5.459 5.459 2.465 5.459 5.459"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;">
+    <g transform="matrix(1,0,0,1,-29.064662,0)">
+        <g id="file-plus" transform="matrix(1,0,0,1,29.064662,0)">
+            <rect x="0" y="0" width="24" height="24" style="fill:none;"/>
+            <path d="M18.61,9.351C17.991,8.676 17.104,8.25 16.125,8.25L14.625,8.25C14.008,8.25 13.5,7.742 13.5,7.125L13.5,5.625C13.5,3.774 11.976,2.25 10.125,2.25L8.25,2.25M18.61,9.351C18.829,9.571 19.29,9.302 19.212,9.001C18.202,5.137 14.662,2.25 10.5,2.25L5.625,2.25C5.004,2.25 4.5,2.754 4.5,3.375L4.5,20.625C4.5,21.246 5.004,21.75 5.625,21.75L10.459,21.75" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:1.5px;"/>
+            <g transform="matrix(0.606493,0,0,0.606493,9.724536,9.771692)">
+                <path d="M12,9L12,15M15,12L9,12M21,12C21,16.937 16.937,21 12,21C7.063,21 3,16.937 3,12C3,7.063 7.063,3 12,3C16.937,3 21,7.063 21,12Z" style="fill:none;fill-rule:nonzero;stroke:white;stroke-width:2.47px;"/>
+            </g>
+        </g>
+    </g>
+</svg>

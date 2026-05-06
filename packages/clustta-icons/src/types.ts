@@ -1,19 +1,19 @@
 /**
  * An icon node is a tuple of [elementName, attributes, children?]
  * This recursive structure represents the SVG DOM tree.
+ * (Legacy format — kept for backwards compatibility)
  */
 export type IconNodeChild = [string, Record<string, string>, IconNodeChild[]?];
 export type IconNode = IconNodeChild[];
 
 /**
  * Each icon is represented as a tuple:
- * [name, defaultAttributes, iconNodes]
+ * [name, defaultAttributes, svgInnerHTML]
  */
-export type IconData = [string, Record<string, string>, IconNode];
+export type IconData = [string, Record<string, string>, string];
 
 export interface CreateIconOptions {
   size?: number | string;
-  strokeWidth?: number | string;
   color?: string;
   class?: string;
   attrs?: Record<string, string>;
@@ -26,7 +26,7 @@ export const defaultAttributes: Record<string, string> = {
   viewBox: '0 0 24 24',
   fill: 'none',
   stroke: 'currentColor',
-  'stroke-width': '2',
+  'stroke-width': '1.5',
   'stroke-linecap': 'round',
   'stroke-linejoin': 'round',
 };

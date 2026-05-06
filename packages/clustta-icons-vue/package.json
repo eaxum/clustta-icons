@@ -1,6 +1,6 @@
 {
   "name": "@clustta/icons-vue",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "description": "Clustta Icons — Vue 3 icon components",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.mjs",
@@ -43,9 +43,6 @@
   },
   "peerDependencies": {
     "vue": ">=3.4.0"
-  },
-  "dependencies": {
-    "@clustta/icons": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.6.0",

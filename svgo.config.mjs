@@ -10,6 +10,11 @@ export default {
           removeTitle: true,
           minifyStyles: false,
           inlineStyles: false,
+          // Preserve path data fidelity — don't convert curves to arcs
+          convertPathData: {
+            makeArcs: false,
+            convertArcs: false,
+          },
         },
       },
     },
@@ -50,17 +55,17 @@ export default {
             if (node.attributes['xml:space']) {
               delete node.attributes['xml:space'];
             }
-            // Replace stroke color values
+            // Replace any hardcoded stroke color with currentColor
             if (node.attributes.stroke) {
-              const s = node.attributes.stroke.toLowerCase();
-              if (s === 'white' || s === '#ffffff' || s === '#fff' || s === 'rgb(247,247,247)' || s === '#f7f7f7') {
+              const s = node.attributes.stroke.toLowerCase().replace(/\s/g, '');
+              if (s !== 'none' && s !== 'currentcolor') {
                 node.attributes.stroke = 'currentColor';
               }
             }
-            // Replace fill color values (but keep "none")
+            // Replace any hardcoded fill color with currentColor (but keep "none")
             if (node.attributes.fill && node.attributes.fill !== 'none') {
-              const f = node.attributes.fill.toLowerCase();
-              if (f === 'white' || f === '#ffffff' || f === '#fff' || f === 'rgb(247,247,247)' || f === '#f7f7f7') {
+              const f = node.attributes.fill.toLowerCase().replace(/\s/g, '');
+              if (f !== 'currentcolor') {
                 node.attributes.fill = 'currentColor';
               }
             }
@@ -68,14 +73,14 @@ export default {
             if (node.attributes.style) {
               node.attributes.style = node.attributes.style
                 .replace(/fill:\s*none\s*;?/gi, '')
-                .replace(/stroke:\s*(white|#ffffff|#fff|currentColor|rgb\(247,247,247\)|#f7f7f7)\s*;?/gi, '')
-                .replace(/fill:\s*(white|#ffffff|#fff|rgb\(247,247,247\)|#f7f7f7)\s*;?/gi, '')
-                .replace(/fill-rule:\s*\w+\s*;?/gi, '')
-                .replace(/clip-rule:\s*\w+\s*;?/gi, '')
-                .replace(/stroke-linecap:\s*\w+\s*;?/gi, '')
-                .replace(/stroke-linejoin:\s*\w+\s*;?/gi, '')
-                .replace(/stroke-miterlimit:[\d.]+;?/gi, '')
-                .replace(/stroke-width:[\d.]+px;?/gi, '')
+                .replace(/stroke:\s*[^;]+;?/gi, '')
+                .replace(/fill:\s*[^;]+;?/gi, '')
+                .replace(/fill-rule:\s*[^;]+;?/gi, '')
+                .replace(/clip-rule:\s*[^;]+;?/gi, '')
+                .replace(/stroke-linecap:\s*[^;]+;?/gi, '')
+                .replace(/stroke-linejoin:\s*[^;]+;?/gi, '')
+                .replace(/stroke-miterlimit:\s*[^;]+;?/gi, '')
+                .replace(/stroke-width:\s*[^;]+;?/gi, '')
                 .trim();
               // Remove empty or semicolon-only style attributes
               if (!node.attributes.style || node.attributes.style === ';' || node.attributes.style === '') {
